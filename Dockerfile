@@ -2,8 +2,8 @@ FROM jenkins/jenkins:lts-alpine
 
 # Setup permissions for Jenkins data
 USER root
-
-RUN apk --update --no-cache add \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.6/community" >> /etc/apk/repositories && \
+  apk --update --no-cache add \
   apache-ant \
   bash \
   ca-certificates \
