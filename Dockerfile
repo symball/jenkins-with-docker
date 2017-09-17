@@ -4,32 +4,62 @@ FROM jenkins/jenkins:lts-alpine
 USER root
 
 RUN apk --update --no-cache add \
-  docker && \
+  apache-ant \
+  bash \
+  ca-certificates \
+  curl \
+  docker \
+  git \
+  libsasl \
+  openssh \
+  ruby \
+  wget && \
   rm -rf /var/cache/apk/*
+
+# Copy the plugin installer across again in order to add debug to the curl call
+USER jenkins
+
+# ENV CURL_CONNECTION_TIMEOUT 60
+# ENV JENKINS_UC_DOWNLOAD https://mirrors.tuna.tsinghua.edu.cn/jenkins
 
 # Install some Jenkins plugins
 RUN /usr/local/bin/install-plugins.sh \
-  ant \
-  gradle \
-  workflow-aggregator \
-  checkstyle \
-  docker-workflow \
+  github-organization-folder \
   build-timeout \
-  credentials-binding \
-  ssh-agent \
-  ssh-slaves \
-  timestamper \
-  ws-cleanup \
+  checkstyle \
   cloverphp \
   crap4j \
+  credentials-binding \
+  docker-workflow \
   dry \
+  email-ext \
+  external-monitor-job \
+  git \
+  github \
+  github-api \
+  gradle \
   htmlpublisher \
   jdepend \
+  ldap \
+  matrix-auth \
+  pam-auth \
   plot \
   pmd \
+  ssh-agent \
+  ssh-slaves \
+  subversion \
+  timestamper \
   violations \
-  xunit
+  windows-slaves \
+  workflow-aggregator \
+  ws-cleanup \
+  xunit \
+  ant \
+  antisamy-markup-formatter  \
+  github-branch-source \
+  mapdb-api \
+  yet-another-docker-plugin
+
 
 # Switch to the jenkins user
-USER jenkins
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
